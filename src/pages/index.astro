@@ -470,9 +470,32 @@ const liveCss = `${BTN_BASE}\n${effects.map((e) => e.css).join('\n')}
 // Per-button copyable snippet: required markup as a leading comment, then the
 // shared base styles and the effect's own rules.
 const snippets: Record<string, string> = {};
+// Per-button LLM prompt: a self-contained instruction a coding agent can paste
+// to recreate the exact same button (markup + base styles + hover effect).
+const prompts: Record<string, string> = {};
 effects.forEach((e, i) => {
   const n = i + 1;
-  snippets[String(n)] = `/* Markup: <button class="btn fx-${n}"><span class="btn-label">${e.name}</span></button> */\n\n${BTN_BASE}\n\n${e.css}`;
+  const markup = `<button class="btn fx-${n}"><span class="btn-label">${e.name}</span></button>`;
+  snippets[String(n)] = `/* Markup: ${markup} */\n\n${BTN_BASE}\n\n${e.css}`;
+  prompts[String(n)] = `Recreate this button exactly, using pure CSS only — no JavaScript, no external libraries, no dependencies.
+
+It is a "${e.name}" button: an interactive button whose hover/focus effect must match the CSS below precisely (same animation, timing curve, and colours).
+
+Use this exact HTML markup:
+
+${markup}
+
+Apply this CSS. The \`.btn\` rules are the shared base every button starts from; the \`.fx-${n}\` rules layer on the "${e.name}" effect:
+
+${BTN_BASE}
+
+${e.css}
+
+Requirements:
+- Keep the markup and class names exactly as shown.
+- The button is themed through CSS custom properties (\`--primary\`, \`--secondary\`, \`--surface\`, \`--bink\`, \`--bsurf\`) — preserve them so the colours can be overridden.
+- Respect \`prefers-reduced-motion: reduce\` by disabling animations and near-instant transitions.
+- Do not add any JavaScript; the effect must be achieved with CSS alone.`;
 });
 ---
 
@@ -522,7 +545,10 @@ effects.forEach((e, i) => {
               aria-label={`View CSS for ${effect.name} button`}
             >
               <span class="cell-index mono">{String(i + 1).padStart(2, '0')}</span>
-              <span class="cell-action mono">⧉ CSS</span>
+              <div class="cell-actions">
+                <button class="cell-action mono" type="button" data-action="prompt" tabindex="-1" aria-label={`Copy LLM prompt for ${effect.name} button`}>◳ Prompt</button>
+                <button class="cell-action mono" type="button" data-action="css" tabindex="-1" aria-label={`View CSS for ${effect.name} button`}>⧉ CSS</button>
+              </div>
               <div class="stage">
                 <button class={`btn fx-${i + 1}`} type="button" tabindex="-1">
                   <span class="btn-label">{effect.name}</span>
@@ -564,20 +590,33 @@ effects.forEach((e, i) => {
     </div>
   </div>
 
+  <script type="application/json" id="button-prompts" set:html={JSON.stringify(prompts)}></script>
+
   <style is:global set:html={liveCss}></style>
   <script type="application/json" id="button-snippets" set:html={JSON.stringify(snippets)}></script>
 </Layout>
 
 <script>
   // ---------- Copy-to-clipboard modal ----------
+  type Mode = 'css' | 'prompt';
+
   const snippets: Record<string, string> = JSON.parse(
     document.getElementById('button-snippets')!.textContent || '{}'
   );
+  const prompts: Record<string, string> = JSON.parse(
+    document.getElementById('button-prompts')!.textContent || '{}'
+  );
+
+  const MODE_CONFIG: Record<Mode, { source: Record<string, string>; copyLabel: string; hint: string }> = {
+    css: { source: snippets, copyLabel: 'Copy CSS', hint: 'Pure CSS · self-contained' },
+    prompt: { source: prompts, copyLabel: 'Copy prompt', hint: 'LLM prompt · paste into your coding agent' },
+  };
 
   const cells = Array.from(document.querySelectorAll<HTMLElement>('.cell'));
   const overlay = document.getElementById('css-modal')!;
   const modalIndex = document.getElementById('modal-index')!;
   const modalTitle = document.getElementById('modal-title')!;
+  const modalHint = document.getElementById('modal-hint')!;
   const modalPreview = document.getElementById('modal-preview')!;
   const modalCode = document.getElementById('modal-code')!;
   const copyBtn = document.getElementById('modal-copy') as HTMLButtonElement;
@@ -585,21 +624,25 @@ effects.forEach((e, i) => {
 
   let lastFocused: HTMLElement | null = null;
   let copyReset: number | undefined;
+  let currentMode: Mode = 'css';
 
-  function openModal(cell: HTMLElement) {
+  function openModal(cell: HTMLElement, mode: Mode = 'css') {
     const key = cell.dataset.key!;
-    const css = snippets[key];
-    if (!css) return;
+    const config = MODE_CONFIG[mode];
+    const text = config.source[key];
+    if (!text) return;
 
+    currentMode = mode;
     modalIndex.textContent = cell.dataset.index || '';
     modalTitle.textContent = cell.dataset.name || '';
-    modalCode.textContent = css;
+    modalHint.textContent = config.hint;
+    modalCode.textContent = text;
 
     // clone the live button for the preview
     const btnEl = cell.querySelector('.stage > *');
     modalPreview.replaceChildren(btnEl ? btnEl.cloneNode(true) : document.createTextNode(''));
 
-    copyBtn.textContent = 'Copy CSS';
+    copyBtn.textContent = config.copyLabel;
     copyBtn.classList.remove('copied');
 
     lastFocused = cell;
@@ -634,13 +677,16 @@ effects.forEach((e, i) => {
     copyBtn.classList.add('copied');
     window.clearTimeout(copyReset);
     copyReset = window.setTimeout(() => {
-      copyBtn.textContent = 'Copy CSS';
+      copyBtn.textContent = MODE_CONFIG[currentMode].copyLabel;
       copyBtn.classList.remove('copied');
     }, 1800);
   }
 
   cells.forEach((cell) => {
-    cell.addEventListener('click', () => openModal(cell));
+    cell.addEventListener('click', (e) => {
+      const action = (e.target as HTMLElement).closest<HTMLElement>('[data-action]');
+      openModal(cell, action?.dataset.action === 'prompt' ? 'prompt' : 'css');
+    });
     cell.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
