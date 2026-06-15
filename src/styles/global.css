@@ -116,7 +116,7 @@ h1 {
   font-weight: 500;
   line-height: 1.04;
   letter-spacing: 0;
-  max-width: 14ch;
+  max-width: 66.6667%;
   animation: reveal .8s cubic-bezier(.22,1,.36,1) both;
 }
 
@@ -131,7 +131,7 @@ h1 em {
 
 .hero p {
   margin-top: calc(var(--base) * 3);
-  max-width: 52ch;
+  max-width: 66.6667%;
   color: color-mix(in srgb, var(--secondary) 70%, var(--surface));
   animation: reveal .8s .12s cubic-bezier(.22,1,.36,1) both;
 }
@@ -2067,22 +2067,39 @@ h1 em {
 /* ---------- Clickable cell affordance ---------- */
 .cell { cursor: pointer; }
 
-.cell-action {
+.cell-actions {
   position: absolute;
   top: calc(var(--base) * 2);
   right: calc(var(--base) * 3);
-  color: var(--secondary);
-  background: var(--primary);
-  padding: 2px 6px;
-  border-radius: var(--r-control);
+  display: flex;
+  gap: calc(var(--base));
   opacity: 0;
   transform: translateY(-4px);
   transition: opacity .25s, transform .25s;
+}
+
+.cell-action {
+  color: var(--secondary);
+  background: var(--primary);
+  border: 0;
+  padding: 2px 6px;
+  border-radius: var(--r-control);
+  cursor: pointer;
   pointer-events: none;
 }
 
+.cell:hover .cell-actions,
+.cell:focus-visible .cell-actions { opacity: 1; transform: translateY(0); }
+
 .cell:hover .cell-action,
-.cell:focus-visible .cell-action { opacity: 1; transform: translateY(0); }
+.cell:focus-visible .cell-action { pointer-events: auto; }
+
+.cell-action:hover { filter: brightness(1.08); }
+
+.cell-action[data-action="prompt"] {
+  color: var(--primary);
+  background: var(--secondary);
+}
 
 .cell:focus-visible { outline: 2px solid var(--primary); outline-offset: -3px; }
 
