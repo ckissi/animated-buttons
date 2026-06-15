@@ -1,0 +1,86 @@
+---
+import type { LoaderType } from '../data/loaders';
+
+interface Props {
+  type: LoaderType;
+}
+
+const { type } = Astro.props;
+
+// loaders built from N <i> elements; everything else is a single element
+const children: Partial<Record<LoaderType, number>> = {
+  dots: 3,
+  bars: 5,
+  cells: 9,
+  chev: 3,
+  wave: 5,
+  stack: 4,
+  stairs: 3,
+  metro: 3,
+  spiral: 8,
+  segments: 5,
+  swap: 2,
+  twins: 2,
+  blink: 2,
+  shimmer: 3,
+  trio: 3,
+  photon: 4,
+  squish: 2,
+  carousel: 3,
+  typing: 3,
+  atom: 2,
+  cards: 3,
+  newton: 5,
+  domino: 4,
+  ferris: 4,
+  traffic: 3,
+  cellular: 4,
+  tetris: 3,
+  quarters: 4,
+  fold: 3,
+  rain: 3,
+  dna: 5,
+  bubble: 3,
+  firework: 8,
+  slide: 3,
+  wifi: 3,
+  battery: 3,
+  trail: 3,
+  magnet: 2,
+  cascade: 4,
+  pong: 2,
+  blinds: 4,
+  gyro: 2,
+  cornerdots: 4,
+  ticks: 12,
+};
+
+// loaders whose visual is text
+const text: Partial<Record<LoaderType, string>> = {
+  type: 'LOADING',
+  cursor: 'ZX-OS',
+  glitch: 'ZX-9',
+};
+
+const count = children[type] ?? 0;
+---
+
+{type === 'helix' ? (
+  <svg class="ld-helix" viewBox="0 0 64 32">
+    <path d="M16 16c0-6 4-10 8-10s16 20 24 20 8-4 8-10-4-10-8-10S24 26 16 26 8 22 8 16s4-10 8-10" />
+  </svg>
+) : type === 'dashring' ? (
+  <svg class="ld-dashring" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="20" />
+  </svg>
+) : type === 'ekg' ? (
+  <svg class="ld-ekg" viewBox="0 0 64 32">
+    <polyline points="0,16 14,16 20,6 28,26 34,16 64,16" />
+  </svg>
+) : text[type] ? (
+  <div class={`ld-${type}`}>{text[type]}</div>
+) : (
+  <div class={`ld-${type}`}>
+    {Array.from({ length: count }).map(() => <i />)}
+  </div>
+)}
