@@ -4,6 +4,9 @@ node_modules/
 # build output
 dist/
 
+# astro cache
+.astro/
+
 # logs
 *.log
 npm-debug.log*

@@ -1,0 +1,52 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .mono { font-family: "JetBrains Mono", ui-monospace, "DejaVu Sans Mono", monospace; }
+      .sans { font-family: "Inter", "Helvetica Neue", Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#E2F1F2"/>
+  <rect x="40" y="40" width="1120" height="550" rx="20" fill="none" stroke="#0F191E" stroke-opacity="0.12"/>
+
+  <!-- Brand row -->
+  <g transform="translate(80,84)">
+    <rect width="44" height="44" rx="10" fill="#F4FF2B"/>
+    <path fill="#0F191E" transform="translate(12,11)" d="M0 0h9.4c3.3 0 5.4 1.7 5.4 4.4 0 1.9-1.1 3.2-2.7 3.8 2 .5 3.3 2.1 3.3 4.3 0 3-2.4 4.7-5.9 4.7H0V0Zm3.9 3.3v3.9h4.5c1.3 0 2.2-.8 2.2-2 0-1.1-.9-1.9-2.2-1.9H3.9Zm0 7.1V14h4.9c1.4 0 2.3-.8 2.3-2.1s-.9-2.1-2.3-2.1H3.9Z"/>
+    <text x="62" y="30" class="mono" font-size="22" font-weight="600" letter-spacing="2" fill="#0F191E">CSS BUTTON LIBRARY</text>
+  </g>
+
+  <!-- Tag pill -->
+  <g transform="translate(80,176)">
+    <rect width="250" height="40" rx="20" fill="none" stroke="#0F191E" stroke-opacity="0.25"/>
+    <text x="22" y="26" class="mono" font-size="15" font-weight="600" letter-spacing="2" fill="#0F191E">PURE CSS · COPY &amp; PASTE</text>
+  </g>
+
+  <!-- Headline: "99 [CSS buttons,] free to copy." with highlighter swipe -->
+  <rect x="206" y="236" width="540" height="80" fill="#F4FF2B"/>
+  <text x="80" y="300" class="sans" font-size="90" font-weight="600" letter-spacing="-1" fill="#0F191E">99</text>
+  <text x="224" y="300" class="sans" font-size="90" font-weight="600" letter-spacing="-1" fill="#0F191E">CSS buttons,</text>
+  <text x="80" y="404" class="sans" font-size="90" font-weight="600" letter-spacing="-1" fill="#0F191E">free to copy.</text>
+
+  <!-- Subtitle -->
+  <text x="82" y="486" class="sans" font-size="26" fill="#0F191E" fill-opacity="0.72">Copy the CSS, or grab a ready-made LLM prompt to recreate any button.</text>
+  <text x="82" y="524" class="sans" font-size="26" fill="#0F191E" fill-opacity="0.72">Pure CSS hover effects — no JavaScript, no dependencies.</text>
+
+  <!-- Decorative sample button + action pills -->
+  <g transform="translate(902,288)">
+    <rect width="218" height="78" rx="12" fill="none" stroke="#0F191E" stroke-width="1.5"/>
+    <text x="109" y="48" text-anchor="middle" class="mono" font-size="18" font-weight="600" letter-spacing="3" fill="#0F191E">HOVER ME</text>
+  </g>
+  <g transform="translate(902,392)">
+    <rect width="106" height="42" rx="10" fill="#0F191E"/>
+    <text x="53" y="28" text-anchor="middle" class="mono" font-size="14" font-weight="600" letter-spacing="1" fill="#F4FF2B">◳ PROMPT</text>
+  </g>
+  <g transform="translate(1018,392)">
+    <rect width="102" height="42" rx="10" fill="#F4FF2B"/>
+    <text x="51" y="28" text-anchor="middle" class="mono" font-size="14" font-weight="600" letter-spacing="1" fill="#0F191E">⧉ CSS</text>
+  </g>
+
+  <!-- Footer url -->
+  <text x="1120" y="556" text-anchor="end" class="mono" font-size="18" font-weight="600" letter-spacing="2" fill="#0F191E" fill-opacity="0.6">animatedbuttons.colorion.co</text>
+</svg>

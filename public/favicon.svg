@@ -1,0 +1,6 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CSS Button Library">
+  <rect x="1" y="1" width="30" height="30" rx="7" fill="#0F191E"/>
+  <rect x="1.5" y="1.5" width="29" height="29" rx="6.5" fill="none" stroke="#F4FF2B" stroke-opacity="0.25"/>
+  <!-- Monospace "B" drawn as vector so it renders identically everywhere -->
+  <path fill="#F4FF2B" d="M9.5 8.5h7.2c2.5 0 4.1 1.3 4.1 3.4 0 1.4-.8 2.4-2 2.9 1.5.4 2.5 1.6 2.5 3.2 0 2.3-1.8 3.6-4.5 3.6H9.5V8.5Zm3 2.5v3h3.4c1 0 1.7-.6 1.7-1.5 0-.9-.7-1.5-1.7-1.5h-3.4Zm0 5.4v3.2h3.7c1.1 0 1.8-.6 1.8-1.6s-.7-1.6-1.8-1.6h-3.7Z"/>
+</svg>
