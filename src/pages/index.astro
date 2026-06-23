@@ -1,6 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { effects, liveCss } from '../data/buttons';
+
+// Cross-promo: the other tools in the Colorion network, surfaced in the header
+// dropdown. `?ref=` attributes the referral back to this site.
+const REF = 'animatedbuttons.colorion.co';
+const colorionLinks = [
+  { label: 'Colorion', href: 'https://www.colorion.co' },
+  { label: '2 Color Combinations', href: 'https://2colors.colorion.co' },
+  { label: 'Color Palettes', href: 'https://colorpalettes.colorion.co' },
+  { label: 'Palette Generator', href: 'https://palettegenerator.colorion.co' },
+  { label: 'Material Colors', href: 'https://material.colorion.co' },
+  { label: 'Mobile Palette', href: 'https://mobilepalette.colorion.co' },
+  { label: 'Gradients', href: 'https://gradients.colorion.co' },
+  { label: 'Gradient Buttons', href: 'https://gradientbuttons.colorion.co' },
+  { label: 'CSS Loaders', href: 'https://cssloaders.colorion.co' },
+  { label: 'CSS Tooltips', href: 'https://csstooltips.colorion.co' },
+];
 ---
 
 <Layout
@@ -12,15 +28,40 @@ import { effects, liveCss } from '../data/buttons';
       <div class="brand-mark">B</div>
       <span class="mono">CSS Button Library</span>
     </div>
-    <div class="header-status mono">
-      <span class="pulse-dot"></span>
-      {effects.length} buttons · MIT
+    <div class="header-right">
+      <details class="menu" id="colorion-menu">
+        <summary class="menu-trigger mono">
+          Colorion Tools
+          <span class="menu-caret" aria-hidden="true">▾</span>
+        </summary>
+        <ul class="menu-list">
+          {
+            colorionLinks.map((link) => (
+              <li>
+                <a
+                  class="mono"
+                  href={`${link.href}?ref=${REF}`}
+                  target="_blank"
+                  rel="noopener"
+                  referrerpolicy="no-referrer-when-downgrade"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </details>
+      <div class="header-status mono">
+        <span class="pulse-dot"></span>
+        {effects.length} buttons · MIT
+      </div>
     </div>
   </header>
 
   <section class="hero">
     <span class="hero-tag mono">Pure CSS · Copy &amp; paste</span>
-    <h1>{effects.length} <em>CSS buttons</em>,<br />free to copy.</h1>
+    <h1>{effects.length} <em>CSS animated buttons</em>,<br />free to copy.</h1>
     <p>
       A library of {effects.length} buttons built with pure CSS hover effects —
       no JavaScript, no dependencies. Copy the self-contained <code>CSS</code> for
@@ -73,8 +114,12 @@ import { effects, liveCss } from '../data/buttons';
       <a href="https://colorion.co?ref=animatedbuttons.colorion.co" target="_blank" rel="noopener" referrerpolicy="no-referrer-when-downgrade">Colorion</a>
       <a href="https://2colors.colorion.co?ref=animatedbuttons.colorion.co" target="_blank" rel="noopener" referrerpolicy="no-referrer-when-downgrade">2 Colors</a>
       <a href="https://gradientbuttons.colorion.co?ref=animatedbuttons.colorion.co" target="_blank" rel="noopener" referrerpolicy="no-referrer-when-downgrade">Gradient Buttons</a>
+      <a href="https://github.com/ckissi/colorion-animated-buttons" target="_blank" rel="noopener">GitHub</a>
     </nav>
     <span class="mono">Pure CSS · No dependencies · MIT licensed</span>
+    <a class="footer-badge" href="https://sevalla.com?ref=animatedbuttons.colorion.co" target="_blank" rel="noopener">
+      <img src="/hosted-on-sevalla.png" alt="Hosted on Sevalla" width="230" height="73" loading="lazy" />
+    </a>
   </footer>
 
   <!-- Copy-to-clipboard modal -->
@@ -228,4 +273,20 @@ import { effects, liveCss } from '../data/buttons';
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) closeModal();
   });
+
+  // ---------- Header dropdown (Colorion tools) ----------
+  // <details> handles open/close natively; this just closes it when the user
+  // clicks away, presses Escape, or picks a destination.
+  const menu = document.getElementById('colorion-menu') as HTMLDetailsElement | null;
+  if (menu) {
+    document.addEventListener('click', (e) => {
+      if (menu.open && !menu.contains(e.target as Node)) menu.open = false;
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) menu.open = false;
+    });
+    menu.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => { menu.open = false; })
+    );
+  }
 </script>
