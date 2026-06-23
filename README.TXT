@@ -44,3 +44,8 @@ Preview the production build:
 LICENSE
 -------
 MIT
+
+
+HOSTING
+-------
+This project is hosted on Sevalla (https://sevalla.com).
